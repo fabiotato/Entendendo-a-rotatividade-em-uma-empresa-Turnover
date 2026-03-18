@@ -1,0 +1,903 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7P25MF3G1W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7P25MF3G1W');
+  </script>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análise de Turnover — Fábio Luiz de Oliveira</title>
+  <meta name="description" content="Projeto: Análise de Turnover em Empresas de Tecnologia. 1.470 colaboradores e 19 variáveis analisadas.">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://portfolio-analista-dados-azure.vercel.app/turnover">
+
+  <!-- Hreflang para internacionalização -->
+  <link rel="alternate" hreflang="pt-BR" href="https://portfolio-analista-dados-azure.vercel.app/turnover">
+  <link rel="alternate" hreflang="en" href="https://portfolio-analista-dados-azure.vercel.app/turnover?lang=en">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Análise de Turnover — Fábio Luiz de Oliveira">
+  <meta property="og:description" content="Análise de 1.470 colaboradores e 19 variáveis para identificar padrões de rotatividade e retenção em empresas de tecnologia.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://portfolio-analista-dados-azure.vercel.app/turnover">
+  <meta property="og:image" content="https://portfolio-analista-dados-azure.vercel.app/assets/img/Turnover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="pt_BR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Análise de Turnover — Fábio Luiz de Oliveira">
+  <meta name="twitter:description" content="Análise de 1.470 colaboradores e 19 variáveis para identificar padrões de rotatividade e retenção em empresas de tecnologia.">
+  <meta name="twitter:image" content="https://portfolio-analista-dados-azure.vercel.app/assets/img/Turnover.jpg">
+
+  <!-- Meta Robots -->
+  <meta name="robots" content="index, follow">
+
+  <!-- Schema.org JSON-LD para Projeto -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "Análise de Turnover",
+    "description": "Análise de 1.470 colaboradores e 19 variáveis para identificar padrões de rotatividade e retenção em empresas de tecnologia.",
+    "author": {
+      "@type": "Person",
+      "name": "Fábio Luiz de Oliveira",
+      "email": "fabioluol@hotmail.com",
+      "url": "https://portfolio-analista-dados-azure.vercel.app"
+    },
+    "keywords": ["Python", "SQL", "Power BI", "Estatística", "RH Analytics", "Turnover Analysis", "Data Analysis"],
+    "dateCreated": "2025",
+    "inLanguage": ["pt-BR", "en"],
+    "url": "https://portfolio-analista-dados-azure.vercel.app/turnover.html",
+    "isPartOf": {
+      "@type": "CreativeWorkSeries",
+      "name": "Portfólio Fábio Luiz de Oliveira"
+    },
+    "about": [
+      {"@type": "Thing", "name": "Análise de Turnover"},
+      {"@type": "Thing", "name": "Recursos Humanos"},
+      {"@type": "Thing", "name": "People Analytics"}
+    ]
+  }
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" integrity="sha384-NrKB+u6Ts6AtkIhwPixiKTzgSKNblyhlk0Sohlgar9UHUBzai/sgnNNWWd291xqt" crossorigin="anonymous"></script>
+  <!-- Script de inicialização de idioma (antes do conteúdo) -->
+  <script>
+    // Carregar idioma salvo ou da URL imediatamente
+    (function() {
+      const savedLang = localStorage.getItem('language') || 'pt';
+      const urlLang = new URLSearchParams(window.location.search).get('lang');
+      // Priorizar localStorage sobre URL para evitar mudança ao fazer refresh
+      const initialLang = savedLang || urlLang || 'pt';
+      if (urlLang && urlLang !== savedLang) {
+        localStorage.setItem('language', urlLang);
+      }
+      // Guardar para usar quando script.js carregar
+      window.pendingLanguage = initialLang;
+    })();
+  </script>
+  <style>
+    .project-page { background: var(--bg-dark); min-height: 100vh; }
+
+    .project-hero-section {
+      position: relative; padding: 140px 20px 80px; text-align: center;
+      background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);
+      border-bottom: 1px solid var(--border); overflow: hidden;
+    }
+    .project-hero-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(102,126,234,0.2) 0%, transparent 70%); pointer-events: none; }
+    .project-hero-section .breadcrumb { font-size: 0.9em; margin-bottom: 20px; position: relative; }
+    .project-hero-section .breadcrumb a { color: var(--text-secondary); text-decoration: none; transition: color var(--transition-fast); }
+    .project-hero-section .breadcrumb a:hover { color: #667eea; }
+    .project-hero-section h1 {
+      font-size: clamp(2em, 5vw, 3.2em); font-weight: 800;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 16px; position: relative;
+    }
+    .project-hero-section h1 i { -webkit-text-fill-color: #667eea; margin-right: 12px; }
+    .project-hero-section .hero-subtitle { color: var(--text-secondary); font-size: 1.15em; max-width: 600px; margin: 0 auto 30px; line-height: 1.6; position: relative; }
+    .project-tags { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; position: relative; }
+    .project-tags .tag { background: rgba(102,126,234,0.15); color: #667eea; border: 1px solid rgba(102,126,234,0.3); padding: 8px 18px; border-radius: 50px; font-size: 0.85em; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: all var(--transition-fast); }
+    .project-tags .tag:hover { background: rgba(102,126,234,0.25); transform: translateY(-2px); }
+
+    .project-content { max-width: 1100px; margin: 0 auto; padding: 60px 20px 80px; }
+
+    .section-title { font-size: 1.8em; font-weight: 700; color: var(--text-primary); margin-bottom: 40px; display: flex; align-items: center; gap: 14px; }
+    .section-title i { color: #667eea; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(102,126,234,0.3), transparent); margin-left: 10px; }
+
+    .overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 60px; }
+    .overview-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 28px; transition: all var(--transition-base); position: relative; overflow: hidden; }
+    .overview-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, #667eea, #764ba2); border-radius: 4px 0 0 4px; }
+    .overview-card:hover { border-color: rgba(102,126,234,0.3); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(102,126,234,0.1); }
+    .overview-card h3 { color: var(--text-primary); font-size: 1.1em; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+    .overview-card h3 i { color: #667eea; font-size: 1.2em; }
+    .overview-card p { color: var(--text-secondary); line-height: 1.7; font-size: 0.95em; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 60px; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; text-align: center; transition: all var(--transition-base); }
+    .stat-card:hover { border-color: rgba(102,126,234,0.3); transform: translateY(-3px); }
+    .stat-card .stat-value { font-size: 2.2em; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: block; margin-bottom: 6px; }
+    .stat-card .stat-label { color: var(--text-secondary); font-size: 0.85em; font-weight: 500; }
+    .stat-card .stat-desc { color: var(--text-muted); font-size: 0.8em; margin-top: 6px; }
+
+    .content-section { margin-bottom: 60px; }
+
+    .highlight-box { background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1)); border: 1px solid rgba(102,126,234,0.2); border-radius: var(--radius-md); padding: 28px; margin-bottom: 30px; }
+    .highlight-box h4 { color: #667eea; font-size: 1.05em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .highlight-box p { color: var(--text-secondary); line-height: 1.7; }
+
+    /* Chart containers */
+    .chart-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 28px; margin-bottom: 30px; transition: all var(--transition-base); }
+    .chart-container:hover { border-color: rgba(102,126,234,0.3); }
+    .chart-container h4 { color: var(--text-primary); font-size: 1.05em; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .chart-container h4 i { color: #667eea; }
+    .chart-wrapper { position: relative; width: 100%; max-height: 350px; }
+    .chart-wrapper-sm { max-height: 280px; }
+    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px; }
+    @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
+
+    /* IV bars */
+    .iv-bar-container { margin-bottom: 16px; }
+    .iv-bar-label { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9em; }
+    .iv-bar-label span:first-child { color: var(--text-primary); font-weight: 500; }
+    .iv-bar-label span:last-child { color: #667eea; font-weight: 600; }
+    .iv-bar-track { height: 8px; background: rgba(102,126,234,0.1); border-radius: 4px; overflow: hidden; }
+    .iv-bar-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; width: 0; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+
+    /* Profile cards */
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+    .profile-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 28px; transition: all var(--transition-base); }
+    .profile-card:hover { transform: translateY(-3px); border-color: rgba(102,126,234,0.3); }
+    .profile-card h4 { font-size: 1.1em; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .profile-card.high-risk h4 { color: #ef4444; }
+    .profile-card.low-risk h4 { color: #22c55e; }
+    .profile-card ul { list-style: none; padding: 0; }
+    .profile-card li { color: var(--text-secondary); padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.9em; display: flex; align-items: center; gap: 10px; }
+    .profile-card li:last-child { border-bottom: none; }
+    .profile-card li i { color: var(--text-muted); width: 16px; }
+
+    .rec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .rec-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; text-align: center; transition: all var(--transition-base); }
+    .rec-card:hover { transform: translateY(-4px); border-color: rgba(102,126,234,0.3); box-shadow: 0 12px 40px rgba(102,126,234,0.08); }
+    .rec-card i { font-size: 2em; color: #667eea; margin-bottom: 14px; display: block; }
+    .rec-card h4 { color: var(--text-primary); font-size: 1em; margin-bottom: 8px; }
+    .rec-card p { color: var(--text-secondary); font-size: 0.85em; line-height: 1.6; }
+
+    .steps-list { display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; }
+    .step-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; display: flex; align-items: flex-start; gap: 20px; transition: all var(--transition-base); }
+    .step-item:hover { border-color: rgba(102,126,234,0.3); transform: translateX(4px); }
+    .step-number { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1em; flex-shrink: 0; }
+    .step-item h4 { color: var(--text-primary); margin-bottom: 6px; }
+    .step-item p { color: var(--text-secondary); font-size: 0.9em; line-height: 1.6; }
+
+    .data-table-wrapper { overflow-x: auto; margin-bottom: 30px; border-radius: var(--radius-md); border: 1px solid var(--border); }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+    .data-table th { background: rgba(102,126,234,0.1); color: #667eea; padding: 14px 18px; text-align: left; font-weight: 600; white-space: nowrap; }
+    .data-table td { padding: 12px 18px; color: var(--text-secondary); border-top: 1px solid var(--border); }
+    .data-table tr:hover td { background: rgba(102,126,234,0.05); }
+
+    .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; font-weight: 500; font-size: 0.95em; padding: 10px 20px; border: 1px solid var(--border); border-radius: var(--radius-sm); transition: all var(--transition-fast); margin-bottom: 40px; }
+    .back-btn:hover { color: #667eea; border-color: rgba(102,126,234,0.3); transform: translateX(-4px); }
+
+    .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(102,126,234,0.2), transparent); margin: 50px 0; }
+
+    /* Floating back button */
+    .floating-back {
+      position: fixed; bottom: 30px; right: 30px; z-index: 999;
+      height: 52px; padding: 0 16px; border-radius: 26px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1.2em; text-decoration: none;
+      box-shadow: 0 8px 32px rgba(102,126,234,0.35);
+      opacity: 0; transform: translateY(20px) scale(0.8);
+      transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+      pointer-events: none;
+    }
+    .floating-back.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    .floating-back:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 12px 40px rgba(102,126,234,0.5); }
+    .floating-back i { transition: transform 0.3s; }
+    .floating-back:hover i { transform: translateX(-3px); }
+    .floating-back .btn-text { font-size: 0.75em; font-weight: 600; white-space: nowrap; max-width: 0; overflow: hidden; transition: max-width 0.4s ease, margin 0.3s ease; margin-left: 0; }
+    .floating-back:hover .btn-text { max-width: 120px; margin-left: 8px; }
+
+    @media (max-width: 768px) {
+      .profile-grid { grid-template-columns: 1fr; }
+      .project-hero-section { padding: 120px 20px 60px; }
+      .floating-back { bottom: 20px; right: 20px; width: 46px; height: 46px; } .floating-back .btn-text { display: none; }
+    }
+  </style>
+</head>
+<body class="project-page">
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-name">Fábio Luiz de Oliveira</span>
+        <span class="logo-role" data-i18n="nav.profissao">Analista de Dados</span>
+      </a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html#sobre" class="nav-link" data-i18n="nav.sobre">Sobre</a></li>
+        <li><a href="index.html#projetos" class="nav-link" data-i18n="nav.projetos">Projetos</a></li>
+        <li><a href="index.html#skills" class="nav-link" data-i18n="nav.skills">Skills</a></li>
+        <li><a href="index.html#certificacoes" class="nav-link" data-i18n="nav.formacao">Formação</a></li>
+        <li><a href="index.html#contato" class="nav-link nav-link--cta" data-i18n="nav.contato">Contato</a></li>
+        <li class="nav-divider">|</li>
+        <li class="language-switcher">
+          <button class="lang-btn" data-lang="pt" title="Português">
+            <img src="https://flagcdn.com/w40/br.png" alt="Português" width="24" height="18">
+          </button>
+          <button class="lang-btn" data-lang="en" title="English">
+            <img src="https://flagcdn.com/w40/gb.png" alt="English" width="24" height="18">
+          </button>
+        </li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="project-hero-section">
+    <div class="breadcrumb animate-on-scroll">
+      <a href="index.html#projetos" data-i18n="projeto_paginas.voltar_portfolio"><i class="fas fa-arrow-left"></i> Voltar ao Portfólio</a>
+    </div>
+    <h1 class="animate-on-scroll" data-i18n="turnover.titulo"><i class="fas fa-users"></i> Análise de Turnover</h1>
+    <p class="hero-subtitle animate-on-scroll" data-i18n="turnover.subtitle">Análise de 1.470 colaboradores e 19 variáveis para identificar padrões de rotatividade e retenção em empresas de tecnologia.</p>
+    <div class="project-tags animate-on-scroll">
+      <span class="tag"><i class="fab fa-python"></i> Python</span>
+      <span class="tag"><i class="fas fa-database"></i> SQL</span>
+      <span class="tag"><i class="fas fa-chart-pie"></i> Power BI</span>
+      <span class="tag"><i class="fas fa-chart-line"></i> Estatística</span>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <main class="project-content">
+    <a href="index.html#projetos" class="back-btn" data-i18n="projeto_paginas.voltar_projetos"><i class="fas fa-arrow-left"></i> Voltar aos projetos</a>
+
+    <!-- Objetivo do Estudo -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.objetivo"><i class="fas fa-bullseye"></i> Objetivo do Estudo</h2>
+      <div class="overview-grid">
+        <div class="overview-card animate-on-scroll">
+          <h3 data-i18n="turnover.desafio"><i class="fas fa-exclamation-triangle"></i> Desafio Constante</h3>
+          <p data-i18n="turnover.desafio_desc">Turnover gera impactos significativos em custos de recrutamento, treinamento e produtividade nas empresas de tecnologia.</p>
+        </div>
+        <div class="overview-card animate-on-scroll">
+          <h3 data-i18n="turnover.base_analise"><i class="fas fa-users"></i> Base Analisada</h3>
+          <p data-i18n="turnover.base_analise_desc">1.470 colaboradores e 19 variáveis relacionadas à rotatividade foram analisados neste estudo.</p>
+        </div>
+        <div class="overview-card animate-on-scroll">
+          <h3 data-i18n="turnover.pergunta"><i class="fas fa-question-circle"></i> Pergunta Central</h3>
+          <p data-i18n="turnover.pergunta_desc">Quais políticas ajustar para reduzir o turnover e melhorar a retenção de talentos?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fonte e Escopo -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.fonte_dados"><i class="fas fa-database"></i> Fonte e Escopo dos Dados</h2>
+      <div class="stat-grid">
+        <div class="stat-card animate-on-scroll">
+          <span class="stat-value" data-i18n="turnover.base_rh" data-i18n="turnover.base_rh">Base_RH.xlsx</span>
+          <span class="stat-label" data-i18n="turnover.origem">Origem dos Dados</span>
+          <span class="stat-desc" data-i18n="turnover.tipo_empresa" data-i18n="turnover.tipo_empresa">Empresa de tecnologia</span>
+        </div>
+        <div class="stat-card animate-on-scroll">
+          <span class="stat-value" data-count="1470" data-format="dot">0</span>
+          <span class="stat-label" data-i18n="turnover.funcionarios">Funcionários Analisados</span>
+        </div>
+        <div class="stat-card animate-on-scroll">
+          <span class="stat-value" data-count="19">0</span>
+          <span class="stat-label" data-i18n="turnover.variaveis">Variáveis</span>
+          <span class="stat-desc" data-i18n="turnover.variaveis_desc">Relacionadas à rotatividade</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Variáveis Analisadas -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.vars_analisadas"><i class="fas fa-list-ul"></i> Variáveis Analisadas</h2>
+      <div class="overview-grid">
+        <div class="overview-card animate-on-scroll">
+          <h3 data-i18n="turnover.dados_pessoais"><i class="fas fa-user"></i> Dados Pessoais</h3>
+          <p data-i18n="turnover.dados_pessoais_desc">Idade, gênero, estado civil, formação acadêmica.</p>
+        </div>
+        <div class="overview-card animate-on-scroll">
+          <h3 data-i18n="turnover.dados_prof"><i class="fas fa-briefcase"></i> Dados Profissionais</h3>
+          <p data-i18n="turnover.dados_prof_desc">Salário, tempo de empresa, cargo, promoções.</p>
+        </div>
+        <div class="overview-card animate-on-scroll">
+          <h3 data-i18n="turnover.fatores_org"><i class="fas fa-building"></i> Fatores Organizacionais</h3>
+          <p data-i18n="turnover.fatores_org_desc">Satisfação, equilíbrio, horas extras, treinamento.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metodologias -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.metodologias"><i class="fas fa-cogs"></i> Metodologias Aplicadas</h2>
+      <div class="steps-list">
+        <div class="step-item animate-on-scroll">
+          <div class="step-number">1</div>
+          <div><h4 data-i18n="turnover.analise_exp">Análise Exploratória</h4><p data-i18n="turnover.analise_exp_desc">Tabelas de frequência e medidas resumo para entender a distribuição dos dados.</p></div>
+        </div>
+        <div class="step-item animate-on-scroll">
+          <div class="step-number">2</div>
+          <div><h4 data-i18n="turnover.analise_assoc">Análise de Associação</h4><p data-i18n="turnover.analise_assoc_desc">Identificação de padrões relacionados ao turnover entre as variáveis.</p></div>
+        </div>
+        <div class="step-item animate-on-scroll">
+          <div class="step-number">3</div>
+          <div><h4 data-i18n="turnover.iv">Information Value (IV)</h4><p data-i18n="turnover.iv_desc">Medição do poder de separação das variáveis para identificar os fatores mais relevantes.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Perfil dos Colaboradores -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.perfil_colab"><i class="fas fa-chart-bar"></i> Perfil dos Colaboradores</h2>
+
+      <!-- Gráfico Faixa Etária -->
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.dist_idade"><i class="fas fa-birthday-cake"></i> Distribuição por Faixa Etária</h4>
+        <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartIdade"></canvas></div>
+      </div>
+
+      <!-- Gráficos Gênero e Estado Civil lado a lado -->
+      <div class="chart-row">
+        <div class="chart-container animate-on-scroll">
+          <h4 data-i18n="turnover.dist_genero"><i class="fas fa-venus-mars"></i> Distribuição por Gênero</h4>
+          <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartGenero"></canvas></div>
+        </div>
+        <div class="chart-container animate-on-scroll">
+          <h4 data-i18n="turnover.estado_civil"><i class="fas fa-ring"></i> Estado Civil</h4>
+          <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartEstadoCivil"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Gráfico Formação Acadêmica -->
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.formacao_acad"><i class="fas fa-graduation-cap"></i> Formação Acadêmica</h4>
+        <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartFormacao"></canvas></div>
+      </div>
+
+      <!-- Turnover por Estado Civil -->
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.taxa_civil"><i class="fas fa-exclamation-circle"></i> Taxa de Turnover por Estado Civil</h4>
+        <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartTurnoverEstadoCivil"></canvas></div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Distribuição Salarial -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.dist_salarial"><i class="fas fa-dollar-sign"></i> Distribuição Salarial</h2>
+      <div class="stat-grid">
+        <div class="stat-card animate-on-scroll"><span class="stat-value" data-count="4908" data-prefix="R$ " data-currency="true" data-format="dot">0</span><span class="stat-label" data-i18n="turnover.mediana">Mediana</span><span class="stat-desc" data-i18n="turnover.valor_central">Valor central da distribuição</span></div>
+        <div class="stat-card animate-on-scroll"><span class="stat-value" data-count="6498" data-prefix="R$ " data-currency="true" data-format="dot">0</span><span class="stat-label" data-i18n="turnover.media">Média</span><span class="stat-desc" data-i18n="turnover.puxada_outliers">Puxada por outliers</span></div>
+        <div class="stat-card animate-on-scroll"><span class="stat-value" data-count="20" data-prefix="R$ " data-currency="true" data-suffix="K+">0</span><span class="stat-label" data-i18n="turnover.outliers">Outliers</span><span class="stat-desc" data-i18n="turnover.salarios_teto">Salários acima do teto</span></div>
+      </div>
+
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.dist_faixa_sal"><i class="fas fa-chart-bar"></i> Distribuição por Faixa Salarial</h4>
+        <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartSalario"></canvas></div>
+      </div>
+
+      <!-- Turnover por Salário -->
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.taxa_sal"><i class="fas fa-chart-line"></i> Turnover por Faixa Salarial</h4>
+        <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartTurnoverSalario"></canvas></div>
+      </div>
+    </section>
+
+    <!-- Outros Fatores -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.outros_fatores"><i class="fas fa-map-marker-alt"></i> Outros Fatores</h2>
+      <div class="chart-row">
+        <div class="chart-container animate-on-scroll">
+          <h4 data-i18n="turnover.distancia"><i class="fas fa-road"></i> Distância até o Trabalho</h4>
+          <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartDistancia"></canvas></div>
+        </div>
+        <div class="chart-container animate-on-scroll">
+          <h4 data-i18n="turnover.viagens"><i class="fas fa-plane"></i> Frequência de Viagens</h4>
+          <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartViagens"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Horas extras -->
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.horas_extras"><i class="fas fa-clock"></i> Realização de Horas Extras</h4>
+        <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartHorasExtras"></canvas></div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Information Value -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.iv"><i class="fas fa-sort-amount-down"></i> Information Value (IV)</h2>
+      <div class="highlight-box animate-on-scroll">
+        <h4 data-i18n="turnover.o_que_e_iv"><i class="fas fa-info-circle"></i> O que é o IV?</h4>
+        <p data-i18n="turnover.iv_explicacao">Métrica que avalia a capacidade preditiva de cada variável, mensurando seu poder de separação entre colaboradores que ficam e os que saem. Quanto maior o IV, mais relevante a variável para prever o turnover.</p>
+      </div>
+
+      <div class="overview-grid" style="margin-bottom: 30px;">
+        <div class="overview-card animate-on-scroll">
+          <h3><i class="fas fa-arrow-up"></i> Poder Forte (&gt;0,3)</h3>
+          <p data-i18n="turnover.poder_forte_desc">Hora extra, salário, ações da empresa, tempo de carreira.</p>
+        </div>
+        <div class="overview-card animate-on-scroll">
+          <h3 data-i18n="turnover.poder_medio"><i class="fas fa-arrows-alt-h"></i> Poder Médio (0,1-0,3)</h3>
+          <p data-i18n="turnover.poder_medio_desc">Estado civil, distância do trabalho.</p>
+        </div>
+        <div class="overview-card animate-on-scroll">
+          <h3><i class="fas fa-arrow-down"></i> Poder Fraco (&lt;0,1)</h3>
+          <p data-i18n="turnover.poder_fraco_desc">Demais variáveis com menor impacto na previsão.</p>
+        </div>
+      </div>
+
+      <!-- Gráfico IV -->
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.ranking_iv"><i class="fas fa-chart-bar"></i> Ranking das Variáveis por IV</h4>
+        <div class="chart-wrapper"><canvas id="chartIV"></canvas></div>
+      </div>
+
+      <!-- IV Bars animadas -->
+      <div class="highlight-box animate-on-scroll">
+        <h4 data-i18n="turnover.barras_iv"><i class="fas fa-signal"></i> Barras de Progresso - IV</h4>
+        <div style="margin-top: 20px;">
+          <div class="iv-bar-container"><div class="iv-bar-label"><span data-i18n="turnover.he">Hora Extra</span><span>IV = 0,40</span></div><div class="iv-bar-track"><div class="iv-bar-fill" data-width="100%"></div></div></div>
+          <div class="iv-bar-container"><div class="iv-bar-label"><span data-i18n="turnover.salario_iv">Salário</span><span>IV = 0,36</span></div><div class="iv-bar-track"><div class="iv-bar-fill" data-width="90%"></div></div></div>
+          <div class="iv-bar-container"><div class="iv-bar-label"><span data-i18n="turnover.acoes">Ações da Empresa</span><span>IV = 0,32</span></div><div class="iv-bar-track"><div class="iv-bar-fill" data-width="80%"></div></div></div>
+          <div class="iv-bar-container"><div class="iv-bar-label"><span data-i18n="turnover.tempo_carreira">Tempo de Carreira</span><span>IV = 0,31</span></div><div class="iv-bar-track"><div class="iv-bar-fill" data-width="77.5%"></div></div></div>
+          <div class="iv-bar-container"><div class="iv-bar-label"><span data-i18n="turnover.estado_civil">Estado Civil</span><span>IV = 0,22</span></div><div class="iv-bar-track"><div class="iv-bar-fill" data-width="55%"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detalhamento dos Fatores -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.detalhes_fatores"><i class="fas fa-search"></i> Detalhamento dos Fatores</h2>
+
+      <!-- Gráfico Hora Extra e Turnover -->
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.detalhe_he"><i class="fas fa-clock"></i> Hora Extra e Turnover (IV = 0,40)</h4>
+        <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartHoraExtraTurnover"></canvas></div>
+      </div>
+
+      <!-- Gráfico Ações e Turnover -->
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.detalhe_acoes"><i class="fas fa-share-alt"></i> Ações da Empresa e Turnover (IV = 0,32)</h4>
+        <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartAcoesTournover"></canvas></div>
+      </div>
+
+      <!-- Gráfico Tempo de Carreira e Turnover -->
+      <div class="chart-container animate-on-scroll">
+        <h4 data-i18n="turnover.detalhe_tempo"><i class="fas fa-hourglass-half"></i> Tempo de Carreira e Turnover (IV = 0,31)</h4>
+        <div class="chart-wrapper chart-wrapper-sm"><canvas id="chartTempoCaTo"></canvas></div>
+      </div>
+
+      <div class="data-table-wrapper animate-on-scroll">
+        <table class="data-table">
+          <thead><tr><th data-i18n="turnover.fator">Fator</th><th>IV</th><th data-i18n="turnover.detalhe_prin">Detalhe Principal</th></tr></thead>
+          <tbody>
+            <tr><td><strong data-i18n="turnover.he">Hora Extra</strong></td><td>0,40</td><td data-i18n="turnover.d_he">31% de turnover entre quem faz hora extra vs 10% entre quem não faz</td></tr>
+            <tr><td><strong data-i18n="turnover.salario_iv">Salário</strong></td><td>0,36</td><td data-i18n="turnover.d_sal">Relação inversa: quanto menor o salário, maior o turnover</td></tr>
+            <tr><td><strong data-i18n="turnover.acoes">Ações da Empresa</strong></td><td>0,32</td><td data-i18n="turnover.d_acoes">Sem ações: 24% turnover (65% dos desligamentos). Com 1+ ações: &lt;10%</td></tr>
+            <tr><td><strong data-i18n="turnover.tempo_carreira">Tempo de Carreira</strong></td><td>0,31</td><td data-i18n="turnover.d_tempo">0-4 anos: 33% de turnover. 20-29 anos: menos de 8%</td></tr>
+            <tr><td><strong data-i18n="turnover.estado_civil">Estado Civil</strong></td><td>0,22</td><td data-i18n="turnover.d_civil">Solteiros: 26%, Casados: 12%, Divorciados: 10%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Perfis de Risco -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.perfis_risco"><i class="fas fa-user-shield"></i> Perfis de Risco</h2>
+      <div class="profile-grid">
+        <div class="profile-card high-risk animate-on-scroll">
+          <h4 data-i18n="turnover.alto_risco"><i class="fas fa-exclamation-triangle"></i> Alto Risco</h4>
+          <ul>
+            <li data-i18n="turnover.ar1"><i class="fas fa-user"></i> Solteiro, início de carreira (0-4 anos)</li>
+            <li data-i18n="turnover.ar2"><i class="fas fa-clock"></i> Faz hora extra regularmente</li>
+            <li data-i18n="turnover.ar3"><i class="fas fa-dollar-sign"></i> Baixo salário (R$ 1-3K)</li>
+            <li data-i18n="turnover.ar4"><i class="fas fa-times-circle"></i> Sem participação acionária na empresa</li>
+          </ul>
+        </div>
+        <div class="profile-card low-risk animate-on-scroll">
+          <h4 data-i18n="turnover.baixo_risco"><i class="fas fa-shield-alt"></i> Baixo Risco</h4>
+          <ul>
+            <li data-i18n="turnover.br1"><i class="fas fa-user"></i> Casado/divorciado, carreira consolidada (20+ anos)</li>
+            <li data-i18n="turnover.br2"><i class="fas fa-clock"></i> Não faz hora extra</li>
+            <li data-i18n="turnover.br3"><i class="fas fa-dollar-sign"></i> Salário elevado (R$ 9K+)</li>
+            <li data-i18n="turnover.br4"><i class="fas fa-check-circle"></i> Possui ações da empresa (2+ lotes)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Conclusões -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.conclusoes"><i class="fas fa-lightbulb"></i> Conclusões Principais</h2>
+      <div class="rec-grid">
+        <div class="rec-card animate-on-scroll"><i class="fas fa-fire"></i><h4 data-i18n="turnover.c1">Sobrecarga</h4><p data-i18n="turnover.cd1">Hora extra é o maior preditor de saída dos colaboradores.</p></div>
+        <div class="rec-card animate-on-scroll"><i class="fas fa-coins"></i><h4 data-i18n="turnover.c2">Remuneração</h4><p data-i18n="turnover.cd2">Salários baixos aumentam significativamente o risco de turnover.</p></div>
+        <div class="rec-card animate-on-scroll"><i class="fas fa-hands-helping"></i><h4 data-i18n="turnover.c3">Engajamento</h4><p data-i18n="turnover.cd3">Participação acionária reduz consideravelmente as saídas voluntárias.</p></div>
+        <div class="rec-card animate-on-scroll"><i class="fas fa-seedling"></i><h4 data-i18n="turnover.c4">Experiência</h4><p data-i18n="turnover.cd4">Início de carreira apresenta a maior instabilidade e risco de saída.</p></div>
+      </div>
+    </section>
+
+    <!-- Recomendações -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.recs"><i class="fas fa-clipboard-check"></i> Recomendações Estratégicas</h2>
+      <div class="rec-grid">
+        <div class="rec-card animate-on-scroll"><i class="fas fa-balance-scale"></i><h4 data-i18n="turnover.r1">Equilíbrio</h4><p data-i18n="turnover.rd1">Reduzir horas extras e sobrecarga dos colaboradores.</p></div>
+        <div class="rec-card animate-on-scroll"><i class="fas fa-money-bill-wave"></i><h4 data-i18n="turnover.r2">Compensação</h4><p data-i18n="turnover.rd2">Revisar política salarial das faixas iniciais.</p></div>
+        <div class="rec-card animate-on-scroll"><i class="fas fa-chart-line"></i><h4 data-i18n="turnover.r3">Participação</h4><p data-i18n="turnover.rd3">Ampliar programa de ações para colaboradores.</p></div>
+        <div class="rec-card animate-on-scroll"><i class="fas fa-user-graduate"></i><h4 data-i18n="turnover.r4">Mentoria</h4><p data-i18n="turnover.rd4">Programa especial para profissionais em início de carreira.</p></div>
+      </div>
+    </section>
+
+    <!-- Próximos Passos -->
+    <section class="content-section">
+      <h2 class="section-title animate-on-scroll" data-i18n="turnover.prox_passos"><i class="fas fa-road"></i> Próximos Passos</h2>
+      <div class="steps-list">
+        <div class="step-item animate-on-scroll"><div class="step-number">1</div><div><h4 data-i18n="turnover.p1">Aprofundamento</h4><p data-i18n="turnover.pd1">Análise detalhada dos grupos de alto risco identificados.</p></div></div>
+        <div class="step-item animate-on-scroll"><div class="step-number">2</div><div><h4 data-i18n="turnover.p2">Modelagem Preditiva</h4><p data-i18n="turnover.pd2">Construção de modelos preditivos de turnover com machine learning.</p></div></div>
+        <div class="step-item animate-on-scroll"><div class="step-number">3</div><div><h4 data-i18n="turnover.p3">Implementação</h4><p data-i18n="turnover.pd3">Políticas de valorização e retenção baseadas nos insights obtidos.</p></div></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p class="footer-copy">&copy; 2026 Fábio Luiz de Oliveira. Todos os direitos reservados.</p>
+        <p class="footer-tagline">Transformando dados em decisões estratégicas.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating back button - ANTES do script -->
+  <!-- Floating back button -->
+  <a href="index.html#projetos" class="floating-back" id="floatingBack" title="Voltar aos Projetos" data-i18n-attr="title:projeto_paginas.voltar_projetos">
+    <i class="fas fa-arrow-left"></i><span class="btn-text" data-i18n-text="projeto_paginas.projetos_btn">Projetos</span>
+  </a>
+
+  <script>
+    (function() {
+      window.scrollTo(0, 0);
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    })();
+
+    // IV bar animation
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.width = entry.target.dataset.width; barObserver.unobserve(entry.target); } });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.iv-bar-fill').forEach(el => barObserver.observe(el));
+
+    // ========== CHART.JS CONFIG ==========
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.08)';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    const purple1 = '#667eea';
+    const purple2 = '#764ba2';
+    const purpleLight = 'rgba(102,126,234,0.6)';
+    const purpleBg = 'rgba(102,126,234,0.15)';
+    const gradientColors = ['#667eea','#7c6ad4','#9258be','#a845a8','#764ba2'];
+
+    // Faixa Etária
+    const chartIdade = new Chart(document.getElementById('chartIdade'), {
+      type: 'bar',
+      data: {
+        labels: ['18-29 anos', '30-43 anos', '44-60 anos'],
+        datasets: [{
+          label: 'Colaboradores',
+          data: [220, 1103, 147],
+          backgroundColor: [purpleLight, purple1, purple2],
+          borderRadius: 8, borderSkipped: false
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx) { const t = window.siteTranslations?.turnover_charts?.t_idade || ' colaboradores'; return ctx.parsed.y + t; } } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,0.06)' } }, x: { grid: { display: false } } } }
+    });
+
+    // Gênero (doughnut)
+    const chartGenero = new Chart(document.getElementById('chartGenero'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Homens (60%)', 'Mulheres (40%)'],
+        datasets: [{ data: [882, 588], backgroundColor: [purple1, purple2], borderWidth: 0, hoverOffset: 8 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } } } }
+    });
+
+    // Estado Civil (doughnut)
+    const chartEstadoCivil = new Chart(document.getElementById('chartEstadoCivil'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Casados (46%)', 'Solteiros (32%)', 'Divorciados (22%)'],
+        datasets: [{ data: [46, 32, 22], backgroundColor: [purple1, '#9258be', purple2], borderWidth: 0, hoverOffset: 8 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } } } }
+    });
+
+    // Formação Acadêmica
+    const chartFormacao = new Chart(document.getElementById('chartFormacao'), {
+      type: 'bar',
+      data: {
+        labels: ['Até Técnico', 'Superior Interrompido', 'Bacharelado', 'Especialização +'],
+        datasets: [{
+          label: '% dos colaboradores',
+          data: [39, 27, 19, 12, 3],
+          backgroundColor: gradientColors,
+          borderRadius: 8, borderSkipped: false
+        }]
+      },
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.x + '%' } } }, scales: { x: { beginAtZero: true, grid: { color: 'rgba(148,163,184,0.06)' }, ticks: { callback: v => v + '%' } }, y: { grid: { display: false } } } }
+    });
+
+    // Turnover por Estado Civil
+    const chartTurnoverEstadoCivil = new Chart(document.getElementById('chartTurnoverEstadoCivil'), {
+      type: 'bar',
+      data: {
+        labels: ['Solteiros', 'Casados', 'Divorciados'],
+        datasets: [{
+          label: 'Taxa de Turnover',
+          data: [26, 12, 10],
+          backgroundColor: ['#ef4444', purpleLight, '#22c55e'],
+          borderRadius: 8, borderSkipped: false
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y + '% de turnover' } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,0.06)' }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
+    });
+
+    // Distribuição Salarial
+    const chartSalario = new Chart(document.getElementById('chartSalario'), {
+      type: 'bar',
+      data: {
+        labels: ['R$ 1-3K', 'R$ 3-5K', 'R$ 5-7K', 'R$ 7-9K', 'R$ 9K+'],
+        datasets: [{
+          label: '% dos colaboradores',
+          data: [27, 23, 20, 15, 15],
+          backgroundColor: gradientColors,
+          borderRadius: 8, borderSkipped: false
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y + '%' } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,0.06)' }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
+    });
+
+    // Turnover por Salário
+    const chartTurnoverSalario = new Chart(document.getElementById('chartTurnoverSalario'), {
+      type: 'line',
+      data: {
+        labels: ['R$ 1-3K', 'R$ 3-5K', 'R$ 5-7K', 'R$ 7-9K', 'R$ 9K+'],
+        datasets: [{
+          label: 'Taxa de Turnover',
+          data: [30, 18, 14, 10, 6],
+          borderColor: purple1, backgroundColor: purpleBg, fill: true,
+          tension: 0.4, pointBackgroundColor: purple1, pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 6
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y + '% de turnover' } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,0.06)' }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
+    });
+
+    // Distância
+    const chartDistancia = new Chart(document.getElementById('chartDistancia'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Até 5 km (43%)', '6-10 km (27%)', '11-20 km (17%)', '+20 km (13%)'],
+        datasets: [{ data: [43, 27, 17, 13], backgroundColor: [purple1, '#7c6ad4', '#9258be', purple2], borderWidth: 0, hoverOffset: 8 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true, font: { size: 11 } } } } }
+    });
+
+    // Viagens
+    const chartViagens = new Chart(document.getElementById('chartViagens'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Raramente (71%)', 'Frequentemente (19%)', 'Nunca (10%)'],
+        datasets: [{ data: [71, 19, 10], backgroundColor: [purple1, '#9258be', purple2], borderWidth: 0, hoverOffset: 8 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true, font: { size: 11 } } } } }
+    });
+
+    // Horas extras
+    const chartHorasExtras = new Chart(document.getElementById('chartHorasExtras'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Não faz hora extra (71,7%)', 'Faz hora extra (28,3%)'],
+        datasets: [{ data: [71.7, 28.3], backgroundColor: ['#22c55e', '#ef4444'], borderWidth: 0, hoverOffset: 8 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } } } }
+    });
+
+    // IV Gráfico horizontal
+    const chartIV = new Chart(document.getElementById('chartIV'), {
+      type: 'bar',
+      data: {
+        labels: ['Hora Extra', 'Salário', 'Ações da Empresa', 'Tempo de Carreira', 'Estado Civil'],
+        datasets: [{
+          label: 'Information Value',
+          data: [0.40, 0.36, 0.32, 0.31, 0.22],
+          backgroundColor: gradientColors,
+          borderRadius: 8, borderSkipped: false
+        }]
+      },
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => 'IV = ' + ctx.parsed.x.toFixed(2) } } }, scales: { x: { beginAtZero: true, max: 0.5, grid: { color: 'rgba(148,163,184,0.06)' } }, y: { grid: { display: false } } } }
+    });
+
+    // Hora Extra e Turnover
+    const chartHoraExtraTurnover = new Chart(document.getElementById('chartHoraExtraTurnover'), {
+      type: 'bar',
+      data: {
+        labels: ['Faz hora extra', 'Não faz hora extra'],
+        datasets: [{
+          label: 'Taxa de Turnover',
+          data: [31, 10],
+          backgroundColor: ['#ef4444', '#22c55e'],
+          borderRadius: 8, borderSkipped: false
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y + '% de turnover' } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,0.06)' }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
+    });
+
+    // Ações e Turnover
+    const chartAcoesTournover = new Chart(document.getElementById('chartAcoesTournover'), {
+      type: 'bar',
+      data: {
+        labels: ['Sem ações', '1 ação', '2 ações'],
+        datasets: [{
+          label: 'Taxa de Turnover',
+          data: [24, 9, 8],
+          backgroundColor: ['#ef4444', purple1, '#22c55e'],
+          borderRadius: 8, borderSkipped: false
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y + '% de turnover' } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,0.06)' }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
+    });
+
+    // Tempo de Carreira e Turnover
+    const chartTempoCaTo = new Chart(document.getElementById('chartTempoCaTo'), {
+      type: 'line',
+      data: {
+        labels: ['0-4 anos', '5-9 anos', '10-14 anos', '15-19 anos', '20-29 anos'],
+        datasets: [{
+          label: 'Taxa de Turnover',
+          data: [33, 18, 12, 10, 8],
+          borderColor: purple1, backgroundColor: purpleBg, fill: true,
+          tension: 0.4, pointBackgroundColor: purple1, pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 6
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.parsed.y + '% de turnover' } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,0.06)' }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
+    });
+
+    // Counter Animation for stat-values
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.stat-value[data-count]').forEach(el => {
+            let target = parseFloat(el.dataset.count);
+            let prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            const isCurrency = el.dataset.currency === 'true';
+            
+            // Recalculate if it's currency and rate exists in window
+            if (isCurrency && window.siteTranslations && window.siteTranslations.currency_vars) {
+              const cv = window.siteTranslations.currency_vars;
+              target = target * cv.rate;
+              prefix = cv.prefix;
+            }
+            
+            const decimals = parseInt(el.dataset.decimals || '0');
+            const useDot = el.dataset.format === 'dot';
+            const duration = 1200;
+            const startTime = performance.now();
+            const animate = (now) => {
+              const progress = Math.min((now - startTime) / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              const current = eased * target;
+              let formatted = current.toFixed(decimals);
+              if (useDot) formatted = Math.round(current).toLocaleString('pt-BR');
+              else formatted = formatted.replace('.', ',');
+              el.textContent = prefix + formatted + suffix;
+              if (progress < 1) requestAnimationFrame(animate);
+            };
+            requestAnimationFrame(animate);
+          });
+          counterObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.stat-grid').forEach(g => counterObs.observe(g));
+
+    // Reatividade de Idioma para Gráficos
+    window.addEventListener('languageChanged', (e) => {
+      const tc = e.detail.translations.turnover_charts;
+      if(!tc) return;
+
+      chartIdade.data.datasets[0].label = tc.d_idade;
+      chartIdade.data.labels = tc.l_idade;
+      chartIdade.update();
+
+      chartGenero.data.labels = tc.l_genero; chartGenero.update();
+      chartEstadoCivil.data.labels = tc.l_estado_civil; chartEstadoCivil.update();
+      
+      chartFormacao.data.datasets[0].label = tc.d_formacao;
+      chartFormacao.data.labels = tc.l_formacao; chartFormacao.update();
+
+      chartTurnoverEstadoCivil.data.datasets[0].label = tc.d_turno_ec;
+      chartTurnoverEstadoCivil.data.labels = tc.l_turno_ec; chartTurnoverEstadoCivil.update();
+
+      chartSalario.data.datasets[0].label = tc.d_formacao;
+      chartSalario.data.labels = tc.l_salario; chartSalario.update();
+
+      chartTurnoverSalario.data.datasets[0].label = tc.d_turno_ec;
+      chartTurnoverSalario.data.labels = tc.l_salario; chartTurnoverSalario.update();
+
+      chartViagens.data.labels = tc.l_viagens; chartViagens.update();
+      chartHorasExtras.data.labels = tc.l_he; chartHorasExtras.update();
+
+      chartIV.data.datasets[0].label = tc.d_iv;
+      chartIV.data.labels = tc.l_iv; chartIV.update();
+
+      chartHoraExtraTurnover.data.datasets[0].label = tc.d_turno_ec;
+      chartHoraExtraTurnover.data.labels = tc.l_he_turno; chartHoraExtraTurnover.update();
+
+      chartAcoesTournover.data.datasets[0].label = tc.d_turno_ec;
+      chartAcoesTournover.data.labels = tc.l_acao_turno; chartAcoesTournover.update();
+
+      chartTempoCaTo.data.datasets[0].label = tc.d_turno_ec;
+      chartTempoCaTo.data.labels = tc.l_tempo_turno; chartTempoCaTo.update();
+      
+      // Update currency static formats instantly
+      if (e.detail.translations.currency_vars) {
+        const cv = e.detail.translations.currency_vars;
+        document.querySelectorAll('.stat-value[data-currency="true"]').forEach(el => {
+           let target = parseFloat(el.dataset.count) * cv.rate;
+           const decimals = parseInt(el.dataset.decimals || '0');
+           const useDot = el.dataset.format === 'dot';
+           let formatted = target.toFixed(decimals);
+           if (useDot) formatted = Math.round(target).toLocaleString('pt-BR');
+           else formatted = formatted.replace('.', ',');
+           el.textContent = cv.prefix + formatted + (el.dataset.suffix || '');
+        });
+      }
+    });
+  </script>
+  <!-- Carregar script com cache-busting -->
+  <script src="script.js?v=20260313"></script>
+  <script>
+    // Floating back button
+    const floatingBack = document.getElementById('floatingBack');
+    window.addEventListener('scroll', () => {
+      floatingBack.classList.toggle('show', window.scrollY > 300);
+    });
+  </script>
+</body>
+</html>
